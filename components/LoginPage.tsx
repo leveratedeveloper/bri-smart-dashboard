@@ -29,12 +29,12 @@ const LoginPage: React.FC = () => {
         <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
             <div className="w-full max-w-md space-y-8">
                 <div>
-                    <img src="/assets/img/CMK-logo-header.webp" alt="CMK Logo" className="mx-auto h-12 w-auto"/>
+                    <CMKLogo className="mx-auto h-12 w-auto" />
                     <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
                         Log in to your account
                     </h2>
                     <p className="mt-2 text-center text-sm text-gray-600">
-                        Welcome back to your CMK Smart Dashboard
+                        Welcome back to your Smart Dashboard
                     </p>
                 </div>
                 <form className="mt-8 space-y-6" onSubmit={handleLogin}>

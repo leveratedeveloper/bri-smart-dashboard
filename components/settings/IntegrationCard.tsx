@@ -17,7 +17,7 @@ const IntegrationCard: React.FC<IntegrationCardProps> = ({ integration, onToggle
                 </div>
                 <button
                     onClick={() => onToggleConnect(id)}
-                    className={`px-3 py-1 text-sm font-semibold rounded-md border transition-colors ${
+                    className={`px-3 py-1 text-xs font-semibold rounded-md border transition-colors ${
                         connected
                             ? 'bg-green-50 border-green-200 text-green-700 hover:bg-green-100'
                             : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
@@ -28,7 +28,7 @@ const IntegrationCard: React.FC<IntegrationCardProps> = ({ integration, onToggle
             </div>
             <div className="mt-4 flex-grow">
                 <h3 className="font-bold text-gray-800">{name}</h3>
-                <p className="text-sm text-gray-500 mt-1">{description}</p>
+                <p className="text-xs text-gray-500 mt-1">{description}</p>
             </div>
         </div>
     );

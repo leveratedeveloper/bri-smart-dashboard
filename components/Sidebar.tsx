@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { CMKLogo, HomeIcon, ReportsIcon, ChatLogsIcon, SettingsIcon, ChevronDownIcon, ChevronsLeftIcon } from './icons';
+import { HomeIcon, ReportsIcon, ChatLogsIcon, SettingsIcon, ChevronDownIcon, ChevronsLeftIcon } from './icons';
 import type { ActiveView } from '../types';
 
 interface NavItemProps {
@@ -16,7 +16,7 @@ interface NavItemProps {
 const NavItem: React.FC<NavItemProps> = ({ icon, label, active, isDropdown, onClick, isOpen, isCollapsed }) => (
     <button 
         onClick={onClick} 
-        className={`w-full flex items-center text-left py-3 rounded-lg transition-all duration-200 ${ isCollapsed ? 'justify-center' : 'justify-between px-4' } ${ active ? 'bg-white text-brand-purple shadow-md' : 'text-white/80 hover:bg-white/10' }`}
+        className={`w-full flex items-center text-left py-2 rounded-lg transition-all duration-200 ${ isCollapsed ? 'justify-center' : 'justify-between px-4' } ${ active ? 'bg-white text-brand-purple shadow-md' : 'text-white/80 hover:bg-white/10' }`}
         aria-label={isCollapsed ? label : undefined}
         title={isCollapsed ? label : undefined}
     >

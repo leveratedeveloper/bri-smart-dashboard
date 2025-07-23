@@ -1,19 +1,21 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell, ResponsiveContainer, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 import { SendIcon, CalendarIcon, DownloadIcon, RefreshCwIcon, MoreHorizontalIcon, ChevronDownIcon } from './icons';
 import MetricCard from './MetricCard';
 import AlertCard from './AlertCard';
-import AIResponseView from './AIResponseView';
-import type { Brand, DashboardData, AIResponse } from '../types';
+import type { Brand, DashboardData, ConversationItem } from '../types';
 import { allBrandsData } from '../data/mockData';
 import { LoaderIcon } from './icons';
 
+interface DashboardProps {
+    selectedBrand: Brand;
+    onAiPrompt: (prompt: string, brand: Brand) => void;
+    isAiLoading: boolean;
+    aiConversation: ConversationItem[];
+}
 
-const Dashboard: React.FC<{ selectedBrand: Brand }> = ({ selectedBrand }) => {
+const Dashboard: React.FC<DashboardProps> = ({ selectedBrand, onAiPrompt, isAiLoading, aiConversation }) => {
     const [prompt, setPrompt] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const [aiResponse, setAiResponse] = useState<AIResponse | null>(null);
     const [selectedDateRange, setSelectedDateRange] = useState('Last 30 Days');
     const [isDateDropdownOpen, setDateDropdownOpen] = useState(false);
     const dateDropdownRef = useRef<HTMLDivElement>(null);
@@ -40,34 +42,8 @@ const Dashboard: React.FC<{ selectedBrand: Brand }> = ({ selectedBrand }) => {
 
     const handlePromptSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!prompt.trim() || isLoading) return;
-
-        setIsLoading(true);
-        setAiResponse(null);
-
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        
-        const mockAIResponse: AIResponse = {
-            summary: `For ${selectedBrand}, the 'Summer Sale Promotion' was the most effective campaign for engagement this quarter. It drove the highest number of sessions and conversions while maintaining a strong Return On Ad Spend (ROAS).`,
-            keyFinding: {
-                title: `Top Campaign: ${selectedBrand}`,
-                value: `${brandData.topCampaigns[0].conversions} Conversions`,
-                change: "+22% vs. Avg. Campaign",
-            },
-            data: brandData.topCampaigns.map(c => ({ Campaign: c.name, Platform: c.platform, Revenue: c.revenue, ROAS: c.roas, Conversions: c.conversions })),
-            recommendations: [
-                { title: `Amplify Top Performer for ${selectedBrand}`, description: "Allocate an additional 15% of the paid media budget to the 'Summer Sale' campaign structure for the next quarter to maximize high-quality traffic." },
-                { title: "Replicate Success on Meta", description: "Test the 'Summer Sale' messaging and creative on Meta Ads to see if the high performance can be replicated on a different platform." },
-            ],
-            followUpQuestions: [
-                "Which ad creative performed best in the Summer Sale campaign?",
-                `Break down the performance of ${selectedBrand}'s Summer Sale by demographic.`,
-                "What is the projected ROI if I increase the budget by 15%?",
-            ]
-        };
-
-        setAiResponse(mockAIResponse);
-        setIsLoading(false);
+        if (!prompt.trim() || isAiLoading) return;
+        onAiPrompt(prompt, selectedBrand);
     };
     
     const OverviewContent = ({ data }: { data: DashboardData }) => {
@@ -202,14 +178,6 @@ const Dashboard: React.FC<{ selectedBrand: Brand }> = ({ selectedBrand }) => {
         );
     };
 
-    const LoadingState = () => (
-        <div className="flex flex-col items-center justify-center p-24 bg-white rounded-xl shadow-sm mt-6">
-            <LoaderIcon className="w-12 h-12 text-brand-pink animate-spin" />
-            <p className="mt-4 text-lg font-semibold text-gray-700">Analyzing data for {selectedBrand}...</p>
-            <p className="text-sm text-gray-500">Our AI is crunching the numbers. This may take a few moments.</p>
-        </div>
-    );
-
     return (
         <div className="space-y-6">
             <div className="bg-white p-6 rounded-xl shadow-sm" title="Use the AI-powered search to ask questions about your marketing data.">
@@ -219,24 +187,24 @@ const Dashboard: React.FC<{ selectedBrand: Brand }> = ({ selectedBrand }) => {
                         type="text"
                         value={prompt}
                         onChange={(e) => setPrompt(e.target.value)}
-                        placeholder={`Ask about ${selectedBrand}... e.g. "Which campaign was most effective?"`}
+                        placeholder={`Try "Give me the most outstanding campaign for ${selectedBrand} in this quarter"`}
                         className="w-full pl-4 pr-14 py-3 border border-gray-300 rounded-full focus:ring-2 focus:ring-brand-pink focus:border-brand-pink transition-all disabled:bg-gray-100"
-                        disabled={isLoading}
+                        disabled={isAiLoading}
                     />
                     <button
                         type="submit"
-                        className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-brand-pink/10 text-brand-pink rounded-full flex items-center justify-center hover:bg-brand-pink/20 disabled:bg-gray-200 disabled:text-gray-400"
-                        disabled={isLoading || !prompt.trim()}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-brand-pink text-white rounded-full flex items-center justify-center hover:bg-brand-pink/90 disabled:bg-gray-200 disabled:text-gray-400"
+                        disabled={isAiLoading || !prompt.trim()}
                         aria-label="Submit prompt"
                     >
-                        {isLoading ? <LoaderIcon className="w-5 h-5 animate-spin" /> : <SendIcon className="w-5 h-5" />}
+                        {isAiLoading && !aiConversation.length ? <LoaderIcon className="w-5 h-5 animate-spin" /> : <SendIcon className="w-5 h-5" />}
                     </button>
                 </form>
                 <div className="mt-4 flex flex-wrap items-center gap-2">
                     {suggestedPrompts.map((p) => (
                         <button
                             key={p}
-                            disabled={isLoading}
+                            disabled={isAiLoading}
                             onClick={() => setPrompt(p)}
                             className={`px-4 py-1.5 rounded-full text-sm font-semibold shadow-sm disabled:opacity-50 transition-colors ${
                                 prompt === p
@@ -250,13 +218,7 @@ const Dashboard: React.FC<{ selectedBrand: Brand }> = ({ selectedBrand }) => {
                 </div>
             </div>
 
-            {isLoading ? (
-                <LoadingState />
-            ) : aiResponse ? (
-                <AIResponseView response={aiResponse} onNewPrompt={() => setAiResponse(null)} setPrompt={setPrompt} />
-            ) : (
-                <OverviewContent data={brandData} />
-            )}
+            <OverviewContent data={brandData} />
 
         </div>
     );

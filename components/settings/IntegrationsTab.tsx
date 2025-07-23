@@ -4,7 +4,7 @@ import { integrationsData as initialIntegrationsData } from '../../data/integrat
 import IntegrationCard from './IntegrationCard';
 import type { Integration, IntegrationCategory } from '../../types';
 
-const TABS = ['All integration', 'Most used', 'Video conferencing', 'Calendars', 'Marketing', 'Email messaging', 'Sales and CRM'];
+const TABS = ['All integration', 'Most used', 'Calendars', 'Marketing',  'Email messaging', 'Sales and CRM'];
 
 const IntegrationsTab: React.FC = () => {
     const [integrations, setIntegrations] = useState<Integration[]>(initialIntegrationsData);

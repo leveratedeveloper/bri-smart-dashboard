@@ -9,7 +9,7 @@ const WelcomeScreen: React.FC = () => {
                 <h1 className="mt-6 text-2xl font-bold text-gray-800">
                     Welcome to your Smart Dashboard
                 </h1>
-                <p className="mt-4 text-md text-gray-500 max-w-xl mx-auto">
+                <p className="mt-4 text-sm text-gray-500 max-w-xl mx-auto">
                     Unlock powerful insights into your marketing performance. To begin, please select a brand from the dropdown menu in the header.
                 </p>
             </div>

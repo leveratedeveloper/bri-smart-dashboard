@@ -60,7 +60,7 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ onLogout }) => {
 
     return (
         <div className="p-4 sm:p-6 lg:p-8 space-y-8 max-w-4xl mx-auto">
-            <h1 className="text-3xl font-bold text-gray-800">My Profile</h1>
+            <h1 className="text-2xl font-bold text-gray-800">My Profile</h1>
 
             {/* Profile Information Card */}
             <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200/80">
@@ -178,8 +178,8 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ onLogout }) => {
              {/* Logout Section */}
             <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200/80 flex items-center justify-between">
                 <div>
-                    <h3 className="font-bold text-gray-800">Logout</h3>
-                    <p className="text-sm text-gray-500">End your current session from this device.</p>
+                    <h3 className="font-bold text-sm text-gray-800">Logout</h3>
+                    <p className="text-xs text-gray-500">End your current session from this device.</p>
                 </div>
                 <button
                     onClick={onLogout}

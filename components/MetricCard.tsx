@@ -15,7 +15,7 @@ const MetricCard: React.FC<MetricCardProps> = ({ metric }) => {
     const ChangeIcon = isPositive ? ArrowUpIcon : ArrowDownIcon;
 
     return (
-        <div className="bg-white p-5 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
+        <div className="border bg-white p-5 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
             <div className="flex items-center justify-between">
                 <p className="text-sm text-gray-500 font-medium">{title}</p>
                 <div className="relative group">

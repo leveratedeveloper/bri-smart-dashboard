@@ -25,7 +25,7 @@ const SimpleMarkdown: React.FC<{ text: string }> = ({ text }) => {
         .replace(/`([^`]+)`/g, '<code class="px-1 py-0.5 bg-gray-100 border border-gray-200 rounded text-sm font-mono text-brand-purple">$1</code>') // Inline code
         .replace(/\n/g, '<br />'); // Newlines
 
-    return <div className="text-xs leading-relaxed" dangerouslySetInnerHTML={{ __html: html }} />;
+    return <div className="text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: html }} />;
 };
 
 
@@ -39,7 +39,7 @@ const HelpWidget: React.FC<HelpWidgetProps> = ({ isOpen, onClose }) => {
     useEffect(() => {
         if (isOpen && !chat) {
             try {
-                const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
+                const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
                 const newChat = ai.chats.create({
                     model: 'gemini-2.5-flash',
                     config: {

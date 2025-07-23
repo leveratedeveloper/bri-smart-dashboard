@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import type { Session } from '@supabase/supabase-js';
+import type { Session, User } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
 import App from '../App';
 import LoginPage from './LoginPage';
@@ -7,24 +7,24 @@ import { LoaderIcon } from './icons';
 
 const AuthManager: React.FC = () => {
     const [session, setSession] = useState<Session | null>(null);
+    const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // v2: Asynchronously get the initial session
         const getInitialSession = async () => {
             const { data: { session } } = await supabase.auth.getSession();
             setSession(session);
+            setUser(session?.user ?? null);
             setLoading(false);
         };
 
         getInitialSession();
 
-        // v2: Listen for authentication state changes
         const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
             setSession(session);
+            setUser(session?.user ?? null);
         });
 
-        // v2: Unsubscribe from the listener when the component unmounts
         return () => {
             subscription?.unsubscribe();
         };
@@ -45,11 +45,11 @@ const AuthManager: React.FC = () => {
         );
     }
 
-    if (!session) {
+    if (!session || !user) {
         return <LoginPage />;
     }
 
-    return <App onLogout={handleLogout} />;
+    return <App onLogout={handleLogout} user={user} />;
 };
 
 export default AuthManager;

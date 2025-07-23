@@ -84,11 +84,7 @@ export interface Alert {
     id: number;
     type: AlertType;
     title: string;
-    description: string;
-}
-
-export interface AIDataPoint {
-  [key: string]: string | number;
+    description:string;
 }
 
 export interface AIRecommendation {
@@ -103,9 +99,17 @@ export interface AIResponse {
     value: string;
     change: string;
   };
-  data: AIDataPoint[];
+  data: string[][];
   recommendations: AIRecommendation[];
   followUpQuestions: string[];
+}
+
+export interface ConversationItem {
+    sender: 'user' | 'ai';
+    userPrompt?: string;
+    aiResponse?: AIResponse;
+    isLoading?: boolean;
+    error?: string;
 }
 
 export interface KOL {
@@ -143,18 +147,19 @@ export interface ChatMessage {
 
 export interface ChatLog {
   id: string;
+  user_id: string;
   title: string;
-  date: string;
-  messages: ChatMessage[];
+  conversation: ConversationItem[];
+  created_at: string;
 }
 
 export interface ReportWidget {
     id: string;
-    name: string;
+    name:string;
     description: string;
 }
 
-export type IntegrationCategory = 'Video conferencing' | 'Calendars' | 'Marketing' | 'Email messaging' | 'Sales and CRM';
+export type IntegrationCategory = 'Calendars' | 'Marketing' | 'Email messaging' | 'Sales and CRM';
 
 export interface Integration {
     id: string;

@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { SearchIcon, BellIcon, HelpCircleIcon, ChevronDownIcon, LogOutIcon } from './icons';
+import { BellIcon, HelpCircleIcon, ChevronDownIcon, LogOutIcon } from './icons';
 import type { Brand } from '../types';
+import { supabase } from '@/lib/supabase';
 
 interface HeaderProps {
     selectedBrand: Brand | null;
@@ -15,7 +16,34 @@ const Header: React.FC<HeaderProps> = ({ selectedBrand, onBrandSelect, onLogout 
     const [isProfileDropdownOpen, setProfileDropdownOpen] = useState(false);
     const brandDropdownRef = useRef<HTMLDivElement>(null);
     const profileDropdownRef = useRef<HTMLDivElement>(null);
+    const [email, setEmail] = useState(null)
 
+    const [userData, setUserData] = useState({
+        email: '',
+        name: '',
+        photo: '',
+      });
+      const [error, setError] = useState('');
+
+      useEffect(() => {
+        const getUserData = async () => {
+          const { data: { user }, error } = await supabase.auth.getUser();
+    
+          if (error || !user) {
+            setError('User not found or not authenticated.');
+            return;
+          }
+    
+          const email = user.email || 'Email not provided';
+          const name = user.user_metadata?.full_name || user.user_metadata?.name || 'Authenticated User';
+          const photo = user.user_metadata?.avatar_url || user.user_metadata?.picture || '';
+    
+          setUserData({ email, name, photo });
+        };
+    
+        getUserData();
+      }, []);
+    
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (brandDropdownRef.current && !brandDropdownRef.current.contains(event.target as Node)) {
@@ -66,19 +94,22 @@ const Header: React.FC<HeaderProps> = ({ selectedBrand, onBrandSelect, onLogout 
                     <button className="text-gray-500 hover:text-gray-700">
                         <BellIcon className="w-6 h-6" />
                     </button>
+                    <button className="text-gray-500 hover:text-gray-700">
+                        <HelpCircleIcon className="w-6 h-6" />
+                    </button>
                     <div className="relative" ref={profileDropdownRef}>
                         <button onClick={() => setProfileDropdownOpen(!isProfileDropdownOpen)}>
                             <img 
                                 className="w-10 h-10 rounded-full object-cover" 
-                                src="https://randomuser.me/api/portraits/women/44.jpg" 
+                                src={userData.photo || 'https://randomuser.me/api/portraits/women/44.jpg'} 
                                 alt="User profile" 
                             />
                         </button>
                          {isProfileDropdownOpen && (
                             <div className="absolute top-full right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-200 py-1 z-50">
                                 <div className="px-4 py-3 border-b">
-                                <p className="text-sm font-semibold text-gray-900">Eleanor Vance</p>
-                                <p className="text-xs text-gray-500 truncate">eleanor.vance@cmk.com</p>
+                                <p className="text-sm font-semibold text-gray-900">{userData.name }</p>
+                                <p className="text-xs text-gray-500 truncate">{userData.email}</p>
                                 </div>
                                 <div className="py-1">
                                     <button

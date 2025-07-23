@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { GoogleGenAI, Type } from '@google/genai';
-import type { User } from '@supabase/supabase-js';
-import { supabase } from './lib/supabase';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import Dashboard from './components/Dashboard';
@@ -26,10 +23,9 @@ import OfflineMediaReport from './components/reports/OfflineMediaReport';
 
 interface AppProps {
     onLogout: () => void;
-    user: User;
 }
 
-const App: React.FC<AppProps> = ({ onLogout, user }) => {
+const App: React.FC<AppProps> = ({ onLogout }) => {
     const [selectedBrand, setSelectedBrand] = useState<Brand | null>(null);
     const [activeView, setActiveView] = useState<ActiveView>('dashboard');
     const [showSetDefaultModal, setShowSetDefaultModal] = useState(false);
@@ -40,7 +36,6 @@ const App: React.FC<AppProps> = ({ onLogout, user }) => {
     const [isAiSidebarOpen, setIsAiSidebarOpen] = useState(false);
     const [aiConversation, setAiConversation] = useState<ConversationItem[]>([]);
     const [isAiLoading, setIsAiLoading] = useState(false);
-    const [currentChatId, setCurrentChatId] = useState<string | null>(null);
 
 
     useEffect(() => {
@@ -53,150 +48,57 @@ const App: React.FC<AppProps> = ({ onLogout, user }) => {
     const handleAiPrompt = async (prompt: string, brand: Brand) => {
         setIsAiLoading(true);
 
-        const isFollowUp = isAiSidebarOpen && aiConversation.length > 0 && currentChatId;
+        const isFollowUp = isAiSidebarOpen && aiConversation.length > 0;
+
         const userMessage: ConversationItem = { sender: 'user', userPrompt: prompt };
         const loadingMessage: ConversationItem = { sender: 'ai', isLoading: true };
 
-        const baseConversation = isFollowUp ? aiConversation.filter(item => !item.error) : [];
-        const newConversation = [...baseConversation, userMessage, loadingMessage];
-        setAiConversation(newConversation);
+        const baseConversation = isFollowUp ? aiConversation : [];
+        setAiConversation([...baseConversation, userMessage, loadingMessage]);
 
         if (!isAiSidebarOpen) {
             setIsAiSidebarOpen(true);
         }
         
-        let chatId = currentChatId;
+        // Simulate AI call
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        const brandData = allBrandsData[brand];
+        const mockAIResponse: AIResponse = {
+            summary: `For ${brand}, the 'Summer Sale Promotion' was the most effective campaign for engagement this quarter. It drove the highest number of sessions and conversions while maintaining a strong Return On Ad Spend (ROAS).`,
+            keyFinding: {
+                title: `Top Campaign: ${brand}`,
+                value: `${brandData.topCampaigns[0].conversions} Conversions`,
+                change: "+22% vs. Avg. Campaign",
+            },
+            data: brandData.topCampaigns.map(c => ({ Campaign: c.name, Platform: c.platform, Revenue: c.revenue, ROAS: c.roas, Conversions: c.conversions })),
+            recommendations: [
+                { title: `Amplify Top Performer for ${brand}`, description: "Allocate an additional 15% of the paid media budget to the 'Summer Sale' campaign structure for the next quarter to maximize high-quality traffic." },
+                { title: "Replicate Success on Meta", description: "Test the 'Summer Sale' messaging and creative on Meta Ads to see if the high performance can be replicated on a different platform." },
+            ],
+            followUpQuestions: [
+                "Which ad creative performed best in the Summer Sale campaign?",
+                `Break down the performance of ${brand}'s Summer Sale by demographic.`,
+                "What is the projected ROI if I increase the budget by 15%?",
+            ]
+        };
 
-        if (!isFollowUp) {
-            // Create new chat log in Supabase
-            const { data, error } = await supabase
-                .from('chat_logs')
-                .insert({ 
-                    user_id: user.id, 
-                    title: prompt.substring(0, 50), // Use first 50 chars as title
-                    conversation: newConversation 
-                })
-                .select('id')
-                .single();
-            
-            if (error) {
-                console.error("Error creating chat log:", error);
-            } else if (data) {
-                chatId = data.id;
-                setCurrentChatId(data.id);
+        // Update conversation with AI response
+        setAiConversation(prev => {
+            const updated = [...prev];
+            const lastIndex = updated.length - 1;
+            if (updated[lastIndex] && updated[lastIndex].isLoading) {
+                updated[lastIndex] = { sender: 'ai', aiResponse: mockAIResponse };
             }
-        }
-        
-        try {
-            const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
-            const brandData = allBrandsData[brand];
+            return updated;
+        });
 
-            const contextData = {
-                executiveMetrics: brandData.executiveMetrics,
-                revenueByChannelData: brandData.revenueByChannelData,
-                topCampaigns: brandData.topCampaigns,
-                organicSearchOverviewMetrics: brandData.organicSearchOverviewMetrics,
-                alerts: brandData.alerts,
-            };
-
-            const systemInstruction = `You are an expert marketing analyst for the brand "${brand}". Your task is to analyze the provided JSON data to answer the user's question. Provide a concise summary, identify a single most important 'keyFinding' (a title, a specific value, and its change), list the raw data that supports your analysis in a 'data' field formatted as an array of arrays (the first inner array MUST be the table headers), and give two actionable recommendations. Also, provide three relevant follow-up questions. Adhere strictly to the JSON schema for your response.`;
-            
-            const fullPrompt = `User question: "${prompt}"\n\nMarketing data for ${brand}:\n${JSON.stringify(contextData, null, 2)}`;
-
-            const responseSchema = {
-                type: Type.OBJECT,
-                properties: {
-                    summary: { type: Type.STRING, description: 'A concise summary of the analysis based on the data.' },
-                    keyFinding: {
-                        type: Type.OBJECT,
-                        properties: {
-                            title: { type: Type.STRING, description: 'The title of the key finding.' },
-                            value: { type: Type.STRING, description: 'The main value or metric of the finding.' },
-                            change: { type: Type.STRING, description: 'The change associated with the value (e.g., vs previous period).' },
-                        },
-                        required: ['title', 'value', 'change']
-                    },
-                    data: {
-                        type: Type.ARRAY,
-                        description: "The subset of raw data that directly supports the summary and key finding, formatted as an array of arrays, where each inner array is a row. The first inner array MUST be the table headers.",
-                        items: {
-                            type: Type.ARRAY,
-                            items: {
-                                type: Type.STRING
-                            }
-                        }
-                    },
-                    recommendations: {
-                        type: Type.ARRAY,
-                        items: {
-                            type: Type.OBJECT,
-                            properties: {
-                                title: { type: Type.STRING },
-                                description: { type: Type.STRING }
-                            },
-                            required: ['title', 'description']
-                        }
-                    },
-                    followUpQuestions: {
-                        type: Type.ARRAY,
-                        items: { type: Type.STRING }
-                    }
-                },
-                required: ['summary', 'keyFinding', 'data', 'recommendations', 'followUpQuestions']
-            };
-
-            const response = await ai.models.generateContent({
-                model: 'gemini-2.5-flash',
-                contents: fullPrompt,
-                config: {
-                    systemInstruction,
-                    responseMimeType: 'application/json',
-                    responseSchema,
-                    temperature: 0.2,
-                }
-            });
-            
-            const aiText = response.text.trim();
-            const aiResponseData: AIResponse = JSON.parse(aiText);
-
-            const finalConversation = [...newConversation];
-            const lastIndex = finalConversation.length - 1;
-            if (finalConversation[lastIndex] && finalConversation[lastIndex].isLoading) {
-                finalConversation[lastIndex] = { sender: 'ai', aiResponse: aiResponseData };
-            }
-
-            setAiConversation(finalConversation);
-            
-            // Update the chat log with the final conversation
-            if (chatId) {
-                await supabase.from('chat_logs').update({ conversation: finalConversation }).eq('id', chatId);
-            }
-
-        } catch (error) {
-            console.error("Error calling Gemini API:", error);
-            const errorMessage = error instanceof Error ? error.message : "An unknown error occurred.";
-            
-            const errorConversation = [...newConversation];
-            const lastIndex = errorConversation.length - 1;
-            if (errorConversation[lastIndex] && errorConversation[lastIndex].isLoading) {
-                 errorConversation[lastIndex] = { sender: 'ai', error: `Sorry, I couldn't process that request. ${errorMessage}` };
-            }
-            setAiConversation(errorConversation);
-
-             if (chatId) {
-                await supabase.from('chat_logs').update({ conversation: errorConversation }).eq('id', chatId);
-            }
-
-        } finally {
-            setIsAiLoading(false);
-        }
+        setIsAiLoading(false);
     };
     
     const handleCloseAiSidebar = () => {
         setIsAiSidebarOpen(false);
         setAiConversation([]);
         setIsAiLoading(false);
-        setCurrentChatId(null);
     };
 
     const handleBrandSelection = (brand: Brand) => {
@@ -236,7 +138,7 @@ const App: React.FC<AppProps> = ({ onLogout, user }) => {
                     <div className="flex flex-col items-center justify-center h-full text-center p-8">
                         <div className="bg-white p-12 rounded-2xl shadow-lg border border-gray-200/50">
                             <h1 className="text-2xl font-bold text-gray-800">Select a Brand to View Report</h1>
-                            <p className="mt-2 text-sm text-gray-500 max-w-xl mx-auto">
+                            <p className="mt-2 text-base text-gray-500 max-w-xl mx-auto">
                                 Please select a brand from the dropdown menu in the header to view this report's data.
                             </p>
                         </div>

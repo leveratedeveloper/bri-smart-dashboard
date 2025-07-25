@@ -159,7 +159,7 @@ const AiSidebar: React.FC<AiSidebarProps> = ({ isOpen, onClose, conversation, on
     );
 
     return (
-        <aside className={`fixed top-0 right-0 h-full w-[500px] bg-white border-l border-gray-200 shadow-2xl flex flex-col transition-transform duration-300 ease-in-out z-20 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+        <aside className={`fixed top-0 right-0 h-full w-full w-lg-[500px] bg-white border-l border-gray-200 shadow-2xl flex flex-col transition-transform duration-300 ease-in-out z-20 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
             <header className="flex-shrink-0 p-4 border-b border-gray-200">
                 <div className="flex justify-between items-center mb-1">
                      <h2 className="text-xl font-bold text-gray-800">AI Analysis</h2>
@@ -201,8 +201,8 @@ const AiSidebar: React.FC<AiSidebarProps> = ({ isOpen, onClose, conversation, on
                         className="w-full pl-24 pr-20 py-3 text-sm border border-gray-300 rounded-xl focus:ring-2 focus:ring-brand-pink focus:border-brand-pink transition-all"
                     />
                     <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1">
-                        <button type="button" disabled={isLoading} className="p-1.5 text-gray-500 hover:text-gray-800 hover:bg-gray-100 rounded-full disabled:opacity-50"><MicIcon className="w-5 h-5" /></button>
-                        <button type="button" disabled={isLoading} className="p-1.5 text-gray-500 hover:text-gray-800 hover:bg-gray-100 rounded-full disabled:opacity-50"><SoundwaveIcon className="w-5 h-5" /></button>
+                        {/* <button type="button" disabled={isLoading} className="p-1.5 text-gray-500 hover:text-gray-800 hover:bg-gray-100 rounded-full disabled:opacity-50"><MicIcon className="w-5 h-5" /></button>
+                        <button type="button" disabled={isLoading} className="p-1.5 text-gray-500 hover:text-gray-800 hover:bg-gray-100 rounded-full disabled:opacity-50"><SoundwaveIcon className="w-5 h-5" /></button> */}
                     </div>
                 </form>
             </footer>

@@ -29,12 +29,12 @@ const LoginPage: React.FC = () => {
         <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
             <div className="w-full max-w-md space-y-8">
                 <div>
-                    <img src="/assets/img/CMK-logo-header.webp" alt="CMK Logo" className="mx-auto h-12 w-auto"/>
+                    <img src="/assets/img/Logo-Bank-BRI.webp" alt="BRI Logo" className="mx-auto h-12 w-auto"/>
                     <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
                         Log in to your account
                     </h2>
                     <p className="mt-2 text-center text-sm text-gray-600">
-                        Welcome back to CMK Smart Dashboard
+                        Welcome back to BRI Smart Dashboard
                     </p>
                 </div>
                 <form className="mt-8 space-y-6" onSubmit={handleLogin}>
@@ -48,7 +48,7 @@ const LoginPage: React.FC = () => {
                                 autoComplete="email"
                                 required
                                 value={email}
-                                onChange={(e) => setEmail('demo@cmk-smart.com')}
+                                onChange={(e) => setEmail('demo@bri.co.id')}
                                 className="relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-3 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
                                 placeholder="Email address"
                             />

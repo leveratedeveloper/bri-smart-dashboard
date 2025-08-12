@@ -62,10 +62,10 @@ const Sidebar: React.FC<SidebarProps> = ({ activeView, setActiveView, isCollapse
     }, [activeView, isCollapsed]);
 
     return (
-        <aside className={`bg-brand-purple text-white flex-shrink-0 flex flex-col hidden lg:flex transition-all duration-300 ease-in-out ${isCollapsed ? 'w-20 p-2' : 'w-64 p-4'}`}>
+        <aside className={`bg-brand-bri text-white flex-shrink-0 flex flex-col hidden lg:flex transition-all duration-300 ease-in-out ${isCollapsed ? 'w-20 p-2' : 'w-64 p-4'}`}>
             <div className={`flex items-center mb-10 transition-all duration-200 ${isCollapsed ? 'justify-center' : 'px-2'}`}>
-                <img src="/assets/img/CMK-logo-header.webp" alt="CMK Logo" width={isCollapsed ? 32 : 48} height={isCollapsed ? 32 : 48} />
-                {!isCollapsed && <h1 className="text-sm font-bold ml-3 whitespace-nowrap">CMK Smart Dashboard</h1>}
+                <img src="/assets/img/bri-logo-white.png" alt="CMK Logo" width={isCollapsed ? 32 : 48} height={isCollapsed ? 32 : 48} />
+                {!isCollapsed && <h1 className="text-sm font-bold ml-3 whitespace-nowrap">Smart Dashboard</h1>}
             </div>
             <nav className="flex-1 flex flex-col gap-2">
                 <NavItem 

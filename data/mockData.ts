@@ -136,7 +136,7 @@ export const mockUsers: User[] = [
     {
         id: 'usr-1',
         name: 'Eleanor Vance',
-        email: 'eleanor.vance@cmk.com',
+        email: 'eleanor.vance@bri.co.id',
         avatarUrl: 'https://randomuser.me/api/portraits/women/44.jpg',
         roleId: 'c-level',
         assignedBrands: [], // Gets all brands by role

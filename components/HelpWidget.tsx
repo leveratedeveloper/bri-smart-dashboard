@@ -43,14 +43,14 @@ const HelpWidget: React.FC<HelpWidgetProps> = ({ isOpen, onClose }) => {
                 const newChat = ai.chats.create({
                     model: 'gemini-2.5-flash',
                     config: {
-                        systemInstruction: "You are a friendly and helpful AI assistant for the 'CMK Smart Dashboard'. Your role is to answer user questions about how to use the application, explain marketing terms (like ROAS, CPA, etc.), and guide them through its features. Keep your answers concise, clear, and helpful. Format your responses with markdown for better readability. If a question is unrelated to the dashboard or marketing concepts, politely decline to answer.",
+                        systemInstruction: "You are a friendly and helpful AI assistant for the 'BRI Smart Dashboard'. Your role is to answer user questions about how to use the application, explain marketing terms (like ROAS, CPA, etc.), and guide them through its features. Keep your answers concise, clear, and helpful. Format your responses with markdown for better readability. If a question is unrelated to the dashboard or marketing concepts, politely decline to answer.",
                     },
                 });
                 setChat(newChat);
 
                 const welcomeMessage: ChatMessage = {
                     sender: 'ai',
-                    text: "Hello! How can I help you with the CMK Smart Dashboard today? Feel free to ask me anything about using the app or understanding the data.",
+                    text: "Hello! How can I help you with the BRI Smart Dashboard today? Feel free to ask me anything about using the app or understanding the data.",
                     timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
                 };
                 setMessages([welcomeMessage]);

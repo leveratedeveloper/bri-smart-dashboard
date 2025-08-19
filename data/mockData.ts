@@ -2,7 +2,7 @@ import type { Brand, AllBrandsData, DashboardData, UserRole, User } from '../typ
 
 // A factory function to create varied data for each brand
 const createBrandData = (brandName: Brand): DashboardData => {
-    const baseRevenue = { 'Frank & Co': 1248560, 'The Palace': 2500000, 'Mondial': 1800000, 'LakuEmas': 950000 }[brandName];
+    const baseRevenue = { 'Agen Brilink': 1248560, 'BRIguna': 2500000, 'BRImo': 1800000, 'Ceria': 950000, 'Debit BRI': 1000000, 'Kartu Kredit': 1500000, 'KPR': 1000000, 'Layanan BRI': 1200000, 'Merchant': 800000, 'BRI Prioritas': 1500000, 'QLOLA': 1000000, 'Tabungan': 1200000, 'WMG': 1000000 }[brandName];
     const multiplier = baseRevenue / 1248560;
 
     return {
@@ -79,13 +79,23 @@ const createBrandData = (brandName: Brand): DashboardData => {
 };
 
 export const allBrandsData: AllBrandsData = {
-    'Frank & Co': createBrandData('Frank & Co'),
-    'The Palace': createBrandData('The Palace'),
-    'Mondial': createBrandData('Mondial'),
-    'LakuEmas': createBrandData('LakuEmas'),
+    'Agen Brilink': createBrandData('Agen Brilink'),
+    'BRIguna': createBrandData('BRIguna'),
+    'BRImo': createBrandData('BRImo'),
+    'Ceria': createBrandData('Ceria'),
+    'Debit BRI': createBrandData('Debit BRI'),
+    'Kartu Kredit': createBrandData('Kartu Kredit'),
+    'KPR': createBrandData('KPR'),
+    'Layanan BRI': createBrandData('Layanan BRI'),
+    'Merchant': createBrandData('Merchant'),
+    'BRI Prioritas': createBrandData('BRI Prioritas'),
+    'QLOLA': createBrandData('QLOLA'),
+    'Tabungan': createBrandData('Tabungan'),
+    'WMG': createBrandData('WMG'),
 };
 
-export const allBrands: Brand[] = ['Frank & Co', 'The Palace', 'Mondial', 'LakuEmas'];
+
+export const allBrands: Brand[] = ['Agen Brilink', 'BRIguna', 'BRImo', 'Ceria', 'Debit BRI', 'Kartu Kredit', 'KPR', 'Layanan BRI', 'Merchant', 'BRI Prioritas', 'QLOLA', 'Tabungan', 'WMG'];
 
 // --- User and Role Management Data ---
 
@@ -145,37 +155,37 @@ export const mockUsers: User[] = [
     {
         id: 'usr-2',
         name: 'Marcus Holloway',
-        email: 'marcus.holloway@cmk.com',
+        email: 'marcus.holloway@bri.co.id',
         avatarUrl: 'https://randomuser.me/api/portraits/men/46.jpg',
         roleId: 'director',
-        assignedBrands: ['Frank & Co', 'The Palace'],
+        assignedBrands: ['Agen Brilink', 'BRIguna'],
         status: 'Active',
     },
     {
         id: 'usr-3',
         name: 'Clara Oswald',
-        email: 'clara.oswald@cmk.com',
+        email: 'clara.oswald@bri.co.id',
         avatarUrl: 'https://randomuser.me/api/portraits/women/47.jpg',
         roleId: 'manager',
-        assignedBrands: ['Frank & Co'],
+        assignedBrands: ['Agen Brilink'],
         status: 'Active',
     },
     {
         id: 'usr-4',
         name: 'Arthur Pendragon',
-        email: 'arthur.pendragon@cmk.com',
+        email: 'arthur.pendragon@bri.co.id',
         avatarUrl: 'https://randomuser.me/api/portraits/men/48.jpg',
         roleId: 'analyst',
-        assignedBrands: ['The Palace'],
+        assignedBrands: ['BRIguna'],
         status: 'Active',
     },
     {
         id: 'usr-5',
         name: 'Gwen Stacy',
-        email: 'gwen.stacy@cmk.com',
+        email: 'gwen.stacy@bri.co.id',
         avatarUrl: 'https://randomuser.me/api/portraits/women/49.jpg',
         roleId: 'director',
-        assignedBrands: ['Mondial', 'LakuEmas'],
+        assignedBrands: ['BRImo', 'WMG'],
         status: 'Invited',
     },
 ];

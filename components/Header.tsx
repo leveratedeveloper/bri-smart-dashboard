@@ -9,7 +9,7 @@ interface HeaderProps {
     onLogout: () => void;
 }
 
-const allBrands: Brand[] = ['Frank & Co', 'The Palace', 'Mondial', 'LakuEmas'];
+const allBrands: Brand[] = ['Agen Brilink', 'BRIguna', 'BRImo', 'Ceria', 'Debit BRI', 'Kartu Kredit', 'KPR', 'Layanan BRI', 'Merchant', 'BRI Prioritas', 'QLOLA', 'Tabungan', 'WMG'];
 
 const Header: React.FC<HeaderProps> = ({ selectedBrand, onBrandSelect, onLogout }) => {
     const [isBrandDropdownOpen, setBrandDropdownOpen] = useState(false);

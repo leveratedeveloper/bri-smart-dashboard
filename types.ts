@@ -1,6 +1,6 @@
 
 
-export type Brand = 'Frank & Co' | 'The Palace' | 'Mondial' | 'LakuEmas';
+export type Brand = 'Agen Brilink' | 'BRIguna' | 'BRImo' | 'Ceria' | 'Debit BRI' | 'Kartu Kredit' | 'KPR' | 'Layanan BRI' | 'Merchant' | 'BRI Prioritas' | 'QLOLA' | 'Tabungan' | 'WMG';
 
 export type ActiveView = 
   | 'dashboard' 

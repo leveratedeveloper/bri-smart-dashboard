@@ -14,19 +14,19 @@ const SetDefaultBrandModal: React.FC<SetDefaultBrandModalProps> = ({ brandName, 
     if (!modalRoot) return null;
 
     const brandStyles: Record<Brand, { logoSrc: string, color: string, bg: string }> = {
-        'Agen Brilink': { logoSrc: '../assets/img/franknco.webp', color: 'text-blue-800', bg: 'bg-blue-100' },
-        'BRIguna': { logoSrc: '../assets/img/the-palace-logo-gold.png', color: 'text-yellow-600', bg: 'bg-yellow-100' },
-        'BRImo': { logoSrc: '../assets/img/BRImo-logo.png', color: 'text-indigo-600', bg: 'bg-indigo-100' },
-        'Ceria': { logoSrc: '../assets/img/lakuemas.png', color: 'text-amber-500', bg: 'bg-amber-100' },
-        'Debit BRI': { logoSrc: '../assets/img/citra-logo.png', color: 'text-amber-500', bg: 'bg-amber-100' },
-        'Kartu Kredit': { logoSrc: '../assets/img/citra-logo.png', color: 'text-amber-500', bg: 'bg-amber-100' },
-        'KPR': { logoSrc: '../assets/img/citra-logo.png', color: 'text-amber-500', bg: 'bg-amber-100' },
-        'Layanan BRI': { logoSrc: '../assets/img/citra-logo.png', color: 'text-amber-500', bg: 'bg-amber-100' },
-        'Merchant': { logoSrc: '../assets/img/citra-logo.png', color: 'text-amber-500', bg: 'bg-amber-100' },
-        'BRI Prioritas': { logoSrc: '../assets/img/citra-logo.png', color: 'text-amber-500', bg: 'bg-amber-100' },
-        'QLOLA': { logoSrc: '../assets/img/citra-logo.png', color: 'text-amber-500', bg: 'bg-amber-100' },
-        'Tabungan': { logoSrc: '../assets/img/citra-logo.png', color: 'text-amber-500', bg: 'bg-amber-100' },
-        'WMG': { logoSrc: '../assets/img/citra-logo.png', color: 'text-amber-500', bg: 'bg-amber-100' },
+        'Agen Brilink': { logoSrc: '../assets/img/your-logo.webp', color: 'text-blue-800', bg: 'bg-blue-100' },
+        'BRIguna': { logoSrc: '../assets/img/your-logo.webp', color: 'text-yellow-600', bg: 'bg-yellow-100' },
+        'BRImo': { logoSrc: '../assets/img/your-logo.webp', color: 'text-indigo-600', bg: 'bg-indigo-100' },
+        'Ceria': { logoSrc: '../assets/img/your-logo.webp', color: 'text-amber-500', bg: 'bg-amber-100' },
+        'Debit BRI': { logoSrc: '../assets/img/your-logo.webp', color: 'text-amber-500', bg: 'bg-amber-100' },
+        'Kartu Kredit': { logoSrc: '../assets/img/your-logo.webp', color: 'text-amber-500', bg: 'bg-amber-100' },
+        'KPR': { logoSrc: '../assets/img/your-logo.webp', color: 'text-amber-500', bg: 'bg-amber-100' },
+        'Layanan BRI': { logoSrc: '../assets/img/your-logo.webp', color: 'text-amber-500', bg: 'bg-amber-100' },
+        'Merchant': { logoSrc: '../assets/img/your-logo.webp', color: 'text-amber-500', bg: 'bg-amber-100' },
+        'BRI Prioritas': { logoSrc: '../assets/img/your-logo.webp', color: 'text-amber-500', bg: 'bg-amber-100' },
+        'QLOLA': { logoSrc: '../assets/img/your-logo.webp', color: 'text-amber-500', bg: 'bg-amber-100' },
+        'Tabungan': { logoSrc: '../assets/img/your-logo.webp', color: 'text-amber-500', bg: 'bg-amber-100' },
+        'WMG': { logoSrc: '../assets/img/your-logo.webp', color: 'text-amber-500', bg: 'bg-amber-100' },
     };
 
     const currentBrandStyle = brandStyles[brandName] || { logoSrc: '', color: 'text-brand-blue', bg: 'bg-blue-100' };
